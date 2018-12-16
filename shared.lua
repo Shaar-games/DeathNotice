@@ -131,11 +131,7 @@ function OnNPCdeath( ply , attacker )
 				--CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:GetClass() )
 			--end
 
-			CURRENTDEATH.victim[k] = tostring( DEATHNOTICE.Victims[k] )
-
-			if DEATHNOTICE.Victims[k]:IsPlayer() then
-				CURRENTDEATH.victim[k] = tostring( DEATHNOTICE.Victims[k]:Name() )
-			end
+				CURRENTDEATH.victim[k] = tostring( DEATHNOTICE.Victims[k]:GetClass() )
 
 			--if isbool( DEATHNOTICE.Victims[k]:IsNPC() ) and DEATHNOTICE.Victims[k]:IsNPC() == true  then
 				--CURRENTDEATH.victim[k] = tostring( DEATHNOTICE.Victims[k]:GetClass() )
