@@ -6,7 +6,6 @@ DEATHNOTICE.Weapons = {}
 CURRENTDEATH = {}
 if SERVER then
 
-
 	function Ondeath( ply , attacker , dmg )
 
 	
@@ -127,15 +126,27 @@ function OnNPCdeath( ply , attacker )
 			if DEATHNOTICE.Attackers[k]:IsPlayer() then
 				CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:Name() )
 			end
+
+			if DEATHNOTICE.Attackers[k]:IsNPC() then
+				CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k] )
+				print(tostring( DEATHNOTICE.Attackers[k] ))
+				if CURRENTDEATH.attacker[k] != "[NULL NPC]" then
+					CURRENTDEATH.attacker[k] = string.Right( CURRENTDEATH.attacker[k] , #CURRENTDEATH.attacker[k] - 3)
+				end
+			end
+
 			--if isbool( DEATHNOTICE.Attackers[k]:IsNPC() ) and DEATHNOTICE.Attackers[k]:IsNPC() == true then
 				--CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:GetClass() )
 			--end
 
-				CURRENTDEATH.victim[k] = tostring( DEATHNOTICE.Victims[k]:GetClass() )
+			CURRENTDEATH.victim[k] = tostring( DEATHNOTICE.Victims[k] )
 
-			--if isbool( DEATHNOTICE.Victims[k]:IsNPC() ) and DEATHNOTICE.Victims[k]:IsNPC() == true  then
-				--CURRENTDEATH.victim[k] = tostring( DEATHNOTICE.Victims[k]:GetClass() )
-			--end
+			if CURRENTDEATH.victim[k] != "[NULL NPC]" then
+				CURRENTDEATH.victim[k] = string.Right( CURRENTDEATH.victim[k] , #CURRENTDEATH.victim[k] - 3)
+			else
+				CURRENTDEATH.victim[k] = "NPC"
+			end
+
 
 			--if DEATHNOTICE.Weapons[k] then
 				--CURRENTDEATH.weapon[k] = tostring( DEATHNOTICE.Weapons[k] )
@@ -167,6 +178,9 @@ surface.CreateFont("DEATHNOTICEFONT", {
     size = 28,
     weight = 300
 })
+
+	function GAMEMODE:AddDeathNotice() return end	
+
 	function DrawShaarDeathNotice()
 		
 		u = 0
