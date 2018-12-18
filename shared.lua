@@ -4,11 +4,25 @@ DEATHNOTICE.Attackers = {}
 DEATHNOTICE.Victims = {}
 DEATHNOTICE.Weapons = {}
 CURRENTDEATH = {}
+CURRENTDEATH.attacker = {}
+CURRENTDEATH.victim = {}
+CURRENTDEATH.weapon = {}
+
 if SERVER then
+
+
+	local function ClearTable()
+		if table.Count( CURRENTDEATH.attacker ) > 50 then
+			CURRENTDEATH.attacker = {}
+			CURRENTDEATH.victim = {}
+			CURRENTDEATH.weapon = {}
+		end
+	end
 
 	function Ondeath( ply , attacker , dmg )
 
-	
+		ClearTable()
+
 		for i=1,20 do
 			if !DEATHNOTICE.Attackers[CurTime()+i/100] then 
 				DEATHNOTICE.Attackers[CurTime()+i/100] = attacker
@@ -29,10 +43,7 @@ if SERVER then
 			break
 			end
 		end
-		
-	CURRENTDEATH.attacker = {}
-	CURRENTDEATH.victim = {}
-	CURRENTDEATH.weapon = {}
+	
 	
 	i = 0
 	for k,v in pairs(DEATHNOTICE.Attackers) do
@@ -40,21 +51,29 @@ if SERVER then
 			i = i + 1
 
 
-			CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k] )
+			if !CURRENTDEATH.attacker[k] then
+				CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k] )
 
-			if DEATHNOTICE.Attackers[k]:IsPlayer() then
-				CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:Name() )
-			end
-			--if isbool( DEATHNOTICE.Attackers[k]:IsNPC() ) and DEATHNOTICE.Attackers[k]:IsNPC() == true then
-				--CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:GetClass() )
-			--end
+				if DEATHNOTICE.Attackers[k]:IsPlayer() then
+					CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:Name() )
+				elseif DEATHNOTICE.Attackers[k]:IsNPC() then
+					CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:GetClass() )
+				elseif IsValid( CURRENTDEATH.attacker[k]:GetOwner() ) then
+					CURRENTDEATH.attacker[k] = DEATHNOTICE.Attackers[k]:GetOwner()
+				end
 
-			CURRENTDEATH.victim[k] = tostring( DEATHNOTICE.Victims[k] )
-
-			if DEATHNOTICE.Victims[k]:IsPlayer() then
-				CURRENTDEATH.victim[k] = tostring( DEATHNOTICE.Victims[k]:Name() )
 			end
 
+			if !CURRENTDEATH.victim[k] then
+				CURRENTDEATH.victim[k] = tostring( DEATHNOTICE.Victims[k] )
+
+				if DEATHNOTICE.Victims[k]:IsPlayer() then
+					CURRENTDEATH.victim[k] = tostring( DEATHNOTICE.Victims[k]:Name() )
+				end
+
+			end
+
+			if !CURRENTDEATH.attacker[k] then
 				if dmg:GetDamageType() == 1 then
 					CURRENTDEATH.attacker[k] = "Prop"
 				end
@@ -70,13 +89,11 @@ if SERVER then
 				if dmg:GetDamageType() == 6144 then
 					CURRENTDEATH.attacker[k] = "Suicide"
 				end
-			--if isbool( DEATHNOTICE.Victims[k]:IsNPC() ) and DEATHNOTICE.Victims[k]:IsNPC() == true  then
-				--CURRENTDEATH.victim[k] = tostring( DEATHNOTICE.Victims[k]:GetClass() )
-			--end
+			end
 
-			--if DEATHNOTICE.Weapons[k] then
-				--CURRENTDEATH.weapon[k] = tostring( DEATHNOTICE.Weapons[k] )
-			--end
+			if CURRENTDEATH.attacker[k] == CURRENTDEATH.victim[k] then
+				CURRENTDEATH.attacker[k] = ""
+			end
 		end
 	end
 
@@ -89,7 +106,8 @@ end
 
 function OnNPCdeath( ply , attacker )
 
-	
+		ClearTable()
+		
 		for i=1,20 do
 			if !DEATHNOTICE.Attackers[CurTime()+i/100] then 
 				DEATHNOTICE.Attackers[CurTime()+i/100] = attacker
@@ -110,49 +128,41 @@ function OnNPCdeath( ply , attacker )
 			break
 			end
 		end
-		
-	CURRENTDEATH.attacker = {}
-	CURRENTDEATH.victim = {}
-	CURRENTDEATH.weapon = {}
 	
 	i = 0
 	for k,v in pairs(DEATHNOTICE.Attackers) do
 		if CurTime() - 10 < k then
 			i = i + 1
 
-
-			CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k] )
-
-			if DEATHNOTICE.Attackers[k]:IsPlayer() then
-				CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:Name() )
-			end
-
-			if DEATHNOTICE.Attackers[k]:IsNPC() then
+			if !CURRENTDEATH.attacker[k] then
 				CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k] )
-				print(tostring( DEATHNOTICE.Attackers[k] ))
-				if CURRENTDEATH.attacker[k] != "[NULL NPC]" then
-					CURRENTDEATH.attacker[k] = string.Right( CURRENTDEATH.attacker[k] , #CURRENTDEATH.attacker[k] - 3)
+
+				if DEATHNOTICE.Attackers[k]:IsPlayer() then
+					CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:Name() )
+				end
+
+				if DEATHNOTICE.Attackers[k]:IsNPC() then
+					CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:GetClass() )
+					if CURRENTDEATH.attacker[k] == "[NULL NPC]" then
+						CURRENTDEATH.attacker[k] = "NPC"
+					end
 				end
 			end
 
-			--if isbool( DEATHNOTICE.Attackers[k]:IsNPC() ) and DEATHNOTICE.Attackers[k]:IsNPC() == true then
-				--CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:GetClass() )
-			--end
-
-			CURRENTDEATH.victim[k] = tostring( DEATHNOTICE.Victims[k] )
-
-			if CURRENTDEATH.victim[k] != "[NULL NPC]" then
-				CURRENTDEATH.victim[k] = string.Right( CURRENTDEATH.victim[k] , #CURRENTDEATH.victim[k] - 3)
-			else
+			if !CURRENTDEATH.victim[k] then
 				CURRENTDEATH.victim[k] = "NPC"
+				if DEATHNOTICE.Victims[k]:IsValid() then
+					CURRENTDEATH.victim[k] = tostring( DEATHNOTICE.Victims[k]:GetClass() )
+				end
+					
+				if CURRENTDEATH.victim[k] == "[NULL NPC]" then
+					CURRENTDEATH.victim[k] = "NPC"
+				end
+
 			end
-
-
-			--if DEATHNOTICE.Weapons[k] then
-				--CURRENTDEATH.weapon[k] = tostring( DEATHNOTICE.Weapons[k] )
-			--end
 		end
 	end
+
 
 	util.AddNetworkString( "DEATHNOTICE" )
 	net.Start( "DEATHNOTICE" , true)
