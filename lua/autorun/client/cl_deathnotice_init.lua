@@ -1,7 +1,13 @@
 
 
-	local i = 0
-	local Mouvement = 0
+
+
+
+
+if !Mouvement then 
+	i = 0
+	Mouvement = 0
+end
 
 surface.CreateFont("DEATHNOTICEFONT", {
     font = "Segoe UI Light",
@@ -9,9 +15,13 @@ surface.CreateFont("DEATHNOTICEFONT", {
     weight = 300
 })
 
-	function GAMEMODE:AddDeathNotice() return end	
-
+	
+	
 	function DrawShaarDeathNotice()
+
+		if LocalPlayer():IsValid() then
+			function GAMEMODE:DrawDeathNotice() end
+		end
 
 		u = 0
 		for k,v in pairs(DEATHNOTICECLIENT.attacker) do
@@ -59,7 +69,6 @@ surface.CreateFont("DEATHNOTICEFONT", {
 	end
 
 	net.Receive( "DEATHNOTICE", function( len, ply )
-		print("CLIENT")
 		DEATHNOTICECLIENT = net.ReadTable()
 		hook.Add("HUDPaint","DEATHNOTICE" , DrawShaarDeathNotice)
 	end )

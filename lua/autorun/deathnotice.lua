@@ -2,7 +2,16 @@
 
 if SERVER then
 
-AddCSLuaFile( "autorun/client/cl_deathnotice_init.lua" )
+local function Addlua()
+	AddCSLuaFile("autorun/client/cl_deathnotice_init.lua")
+	--include("autorun/deathnotice.lua")
+end
+
+hook.Add("Think","ShaarConnect", Addlua)
+
+end
+
+if SERVER then
 
 	DEATHNOTICE = {}
 	DEATHNOTICE.Attackers = {}
@@ -26,7 +35,6 @@ AddCSLuaFile( "autorun/client/cl_deathnotice_init.lua" )
 	end
 
 	function Ondeath( ply , attacker , dmg )
-		print("SERVER")
 
 		ClearTable()
 
