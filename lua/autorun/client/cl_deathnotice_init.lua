@@ -1,9 +1,6 @@
 
 
 
-
-
-
 if !Mouvement then 
 	i = 0
 	Mouvement = 0
@@ -49,14 +46,14 @@ surface.CreateFont("DEATHNOTICEFONT", {
 				if CurTime() - 6 < k then
 					if v == LocalPlayer():Name() or DEATHNOTICECLIENT.victim[k] == LocalPlayer():Name() then
 						draw.RoundedBox( 0, ScrW()/1.17 - 250 , ScrH()/100 + i*45 - 40 + Mouvement, 500, 40, Color(200 ,0 ,0 , 200) )
-						draw.SimpleText( v, "DEATHNOTICEFONT", ScrW()/1.17 - 240, ScrH()/100 + i*45 - 20 + Mouvement, Color( 255, 255, 255 ), 0, 1 )
+						draw.SimpleText( DEATHNOTICECLIENT.attacker[k], "DEATHNOTICEFONT", ScrW()/1.17 - 240, ScrH()/100 + i*45 - 20 + Mouvement, Color( 255, 255, 255 ), 0, 1 )
 						draw.SimpleText( DEATHNOTICECLIENT.victim[k], "DEATHNOTICEFONT", ScrW()/1.17 + 240, ScrH()/100 + i*45 - 20 + Mouvement, Color( 255, 255, 255 ), 2, 1 )
 
 						surface.SetDrawColor( 0, 0, 0, 255 )
 						surface.DrawPoly( triangle )
 					else
 						draw.RoundedBox( 0, ScrW()/1.17 - 250 , ScrH()/100 + i*45 - 40 + Mouvement, 500, 40, Color(0 ,0 ,0 , 100) )
-						draw.SimpleText( v, "DEATHNOTICEFONT", ScrW()/1.17 - 240, ScrH()/100 + i*45 - 20 + Mouvement, Color( 255, 255, 255 ), 0, 1 )
+						draw.SimpleText( DEATHNOTICECLIENT.attacker[k], "DEATHNOTICEFONT", ScrW()/1.17 - 240, ScrH()/100 + i*45 - 20 + Mouvement, Color( 255, 255, 255 ), 0, 1 )
 						draw.SimpleText( DEATHNOTICECLIENT.victim[k], "DEATHNOTICEFONT", ScrW()/1.17 + 240, ScrH()/100 + i*45 - 20 + Mouvement, Color( 255, 255, 255 ), 2, 1 )
 
 						surface.SetDrawColor( 255, 255, 255, 255 )
@@ -65,11 +62,12 @@ surface.CreateFont("DEATHNOTICEFONT", {
 				end
 			end
 		end
-		if i == 0 then Mouvement = 0 end
+		--if i == 0 then Mouvement = 0 end
 	end
 
 	net.Receive( "DEATHNOTICE", function( len, ply )
 		DEATHNOTICECLIENT = net.ReadTable()
+		PrintTable(DEATHNOTICECLIENT)
 		hook.Add("HUDPaint","DEATHNOTICE" , DrawShaarDeathNotice)
 	end )
 
