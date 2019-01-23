@@ -1,11 +1,16 @@
 
 
+include("autorun/client/cl_deathnotice_init.lua")
+
 if SERVER then
+
+	local i
 
 	local function Addlua()
 		AddCSLuaFile("autorun/client/cl_deathnotice_init.lua")
 	end
 	
+	Addlua()
 
 	DEATHNOTICE = {}
 	DEATHNOTICE.Attackers = {}
@@ -20,23 +25,23 @@ if SERVER then
 
 	
 
-	local function ClearTable()
-		Addlua()
-		if table.Count( CURRENTDEATH.attacker ) > 50 then
-			CURRENTDEATH.attacker = {}
-			CURRENTDEATH.victim = {}
-			CURRENTDEATH.weapon = {}
-		end
+local function ClearTable()
+	
+	if table.Count( CURRENTDEATH.attacker ) > 50 then
+		CURRENTDEATH.attacker = {}
+		CURRENTDEATH.victim = {}
+		CURRENTDEATH.weapon = {}
 	end
+end
 
 
 
-	function OnNPCdeath( ply , attacker )
+local function OnNPCdeath( ply , attacker )
 
 		ClearTable()
 		
 		for i=1,20 do
-			if !DEATHNOTICE.Attackers[CurTime()+i/1000 then 
+			if !DEATHNOTICE.Attackers[CurTime()+i/1000] then 
 				DEATHNOTICE.Attackers[CurTime()+i/1000] = attacker
 			break
 			end
@@ -45,13 +50,6 @@ if SERVER then
 		for i=1,20 do
 			if !DEATHNOTICE.Victims[CurTime()+i/1000] then 
 				DEATHNOTICE.Victims[CurTime()+i/1000] = ply
-			break
-			end
-		end
-
-		for i=1,20 do
-			if !DEATHNOTICE.Weapons[CurTime()+i/1000] then 
-				DEATHNOTICE.Weapons[CurTime()+i/1000] = dmg
 			break
 			end
 		end
@@ -98,7 +96,7 @@ if SERVER then
 	
 end
 
-	function Ondeath( ply , attacker , dmg )
+local function Ondeath( ply , attacker , dmg )
 
 		ClearTable()
 
