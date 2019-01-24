@@ -21,6 +21,16 @@ surface.CreateFont("DEATHNOTICEFONT", {
 
 		local VGA = (ScrW() - 1920)/4
 
+		local VGATEXT = 0
+
+		VGATEXT = ScrW()/(ScrW()/50)
+
+		if (ScrW()/ScrW()) > 1.4 then 
+			VGATEXT = 0
+		end
+
+		--print(VGATEXT)
+
 		if LocalPlayer():IsValid() then
 			function GAMEMODE:DrawDeathNotice() end
 		end
@@ -51,15 +61,15 @@ surface.CreateFont("DEATHNOTICEFONT", {
 				if CurTime() - 6 < k then
 					if v == LocalPlayer():Name() or DEATHNOTICECLIENT.victim[k] == LocalPlayer():Name() then
 						draw.RoundedBox( 0, ScrW()/1 - 170 - ScrW()/5 + VGA , ScrH()/100 + i*45 - 40 + Mouvement, 500, 40, Color(200 ,0 ,0 , 200) )
-						draw.SimpleText( DEATHNOTICECLIENT.attacker[k], "DEATHNOTICEFONT", ScrW()/1 - ScrW()/3.5 + VGA, ScrH()/100 + i*45 - 20 + Mouvement, Color( 255, 255, 255 ), 0, 1 )
-						draw.SimpleText( DEATHNOTICECLIENT.victim[k], "DEATHNOTICEFONT", ScrW()/1 + 240*2 - ScrW()/3.5 + VGA, ScrH()/100 + i*45 - 20 + Mouvement, Color( 255, 255, 255 ), 2, 1 )
+						draw.SimpleText( DEATHNOTICECLIENT.attacker[k], "DEATHNOTICEFONT", ScrW()/1 - ScrW()/3.5 + VGA - VGATEXT, ScrH()/100 + i*45 - 20 + Mouvement, Color( 255, 255, 255 ), 0, 1 )
+						draw.SimpleText( DEATHNOTICECLIENT.victim[k], "DEATHNOTICEFONT", ScrW()/1 + 240*2 - ScrW()/3.5 + VGA - VGATEXT, ScrH()/100 + i*45 - 20 + Mouvement, Color( 255, 255, 255 ), 2, 1 )
 
 						surface.SetDrawColor( 0, 0, 0, 255 )
 						surface.DrawPoly( triangle )
 					else
 						draw.RoundedBox( 0, ScrW()/1 - 170 - ScrW()/5 + VGA , ScrH()/100 + i*45 - 40 + Mouvement, 500, 40, Color(0 ,0 ,0 , 100) )
-						draw.SimpleText( DEATHNOTICECLIENT.attacker[k], "DEATHNOTICEFONT", ScrW()/1 - ScrW()/3.5 + VGA , ScrH()/100 + i*45 - 20 + Mouvement, Color( 255, 255, 255 ), 0, 1 )
-						draw.SimpleText( DEATHNOTICECLIENT.victim[k], "DEATHNOTICEFONT", ScrW()/1 + 240*2 - ScrW()/3.5 + VGA, ScrH()/100 + i*45 - 20 + Mouvement, Color( 255, 255, 255 ), 2, 1 )
+						draw.SimpleText( DEATHNOTICECLIENT.attacker[k], "DEATHNOTICEFONT", ScrW()/1 - ScrW()/3.5 + VGA - VGATEXT, ScrH()/100 + i*45 - 20 + Mouvement, Color( 255, 255, 255 ), 0, 1 )
+						draw.SimpleText( DEATHNOTICECLIENT.victim[k], "DEATHNOTICEFONT", ScrW()/1 + 240*2 - ScrW()/3.5 + VGA - VGATEXT, ScrH()/100 + i*45 - 20 + Mouvement, Color( 255, 255, 255 ), 2, 1 )
 
 						surface.SetDrawColor( 255, 255, 255, 255 )
 						surface.DrawPoly( triangle )
