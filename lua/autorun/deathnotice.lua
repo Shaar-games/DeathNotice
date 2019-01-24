@@ -64,14 +64,20 @@ local function OnNPCdeath( ply , attacker )
 
 				if DEATHNOTICE.Attackers[k]:IsPlayer() then
 					CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:Name() )
+				elseif DEATHNOTICE.Attackers[k]:IsNPC() then
+					CURRENTDEATH.attacker[k] = DEATHNOTICE.Attackers[k]:GetClass()
+				elseif DEATHNOTICE.Attackers[k]:GetOwner():IsValid() then
+					if DEATHNOTICE.Attackers[k]:GetOwner():IsPlayer() then
+					CURRENTDEATH.attacker[k] = DEATHNOTICE.Attackers[k]:GetOwner():Name()
+					end
+				elseif DEATHNOTICE.Attackers[k]:IsValid() then
+					CURRENTDEATH.attacker[k] = DEATHNOTICE.Attackers[k]:GetClass()
+				elseif DEATHNOTICE.Attackers[k].MetaName then
+					CURRENTDEATH.attacker[k] = CURRENTDEATH.attacker[k].MetaName
+				else
+					CURRENTDEATH.attacker[k] = "World"
 				end
 
-				if DEATHNOTICE.Attackers[k]:IsNPC() then
-					CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:GetClass() )
-					if CURRENTDEATH.attacker[k] == "[NULL NPC]" then
-						CURRENTDEATH.attacker[k] = "NPC"
-					end
-				end
 			end
 
 			if !CURRENTDEATH.victim[k] then
@@ -85,6 +91,9 @@ local function OnNPCdeath( ply , attacker )
 				end
 
 			end
+		else
+			table.remove( DEATHNOTICE.Attackers, k )
+			table.remove( DEATHNOTICE.Victims, k )
 		end
 	end
 
@@ -97,7 +106,7 @@ local function OnNPCdeath( ply , attacker )
 end
 
 local function Ondeath( ply , attacker , dmg )
-
+	
 		ClearTable()
 
 		for i=1,20 do
@@ -134,9 +143,15 @@ local function Ondeath( ply , attacker , dmg )
 				if DEATHNOTICE.Attackers[k]:IsPlayer() then
 					CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:Name() )
 				elseif DEATHNOTICE.Attackers[k]:IsNPC() then
-					CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:GetClass() )
-				elseif DEATHNOTICE.Attackers[k]:GetOwner():IsPlayer() then
+					CURRENTDEATH.attacker[k] = DEATHNOTICE.Attackers[k]:GetClass()
+				elseif DEATHNOTICE.Attackers[k]:GetOwner():IsValid() then
+					if DEATHNOTICE.Attackers[k]:GetOwner():IsPlayer() then
 					CURRENTDEATH.attacker[k] = DEATHNOTICE.Attackers[k]:GetOwner():Name()
+					end
+				elseif DEATHNOTICE.Attackers[k]:IsValid() then
+					CURRENTDEATH.attacker[k] = DEATHNOTICE.Attackers[k]:GetClass()
+				elseif DEATHNOTICE.Attackers[k].MetaName then
+					CURRENTDEATH.attacker[k] = CURRENTDEATH.attacker[k].MetaName
 				else
 					CURRENTDEATH.attacker[k] = "World"
 				end
@@ -155,24 +170,23 @@ local function Ondeath( ply , attacker , dmg )
 			if !CURRENTDEATH.attacker[k] then
 				if dmg:GetDamageType() == 1 then
 					CURRENTDEATH.attacker[k] = "Prop"
-				end
-
-				if dmg:GetDamageType() == 32 then
+				elseif dmg:GetDamageType() == 32 then
 					CURRENTDEATH.attacker[k] = "Fall Damage"
-				end
-
-				if dmg:GetDamageType() == 4 then
+				elseif dmg:GetDamageType() == 4 then
 					CURRENTDEATH.attacker[k] = tostring( DEATHNOTICE.Attackers[k]:GetClass() )
 				end
+			end
 
-				if dmg:GetDamageType() == 6144 then
+			if dmg:GetDamageType() == 6144 then
 					CURRENTDEATH.attacker[k] = "Suicide"
-				end
 			end
 
 			if CURRENTDEATH.attacker[k] == CURRENTDEATH.victim[k] then
 				CURRENTDEATH.attacker[k] = ""
 			end
+		else
+			table.remove( DEATHNOTICE.Attackers, k )
+			table.remove( DEATHNOTICE.Victims, k )
 		end
 	end
 
