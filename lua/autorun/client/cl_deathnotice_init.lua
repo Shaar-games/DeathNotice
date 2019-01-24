@@ -25,11 +25,9 @@ surface.CreateFont("DEATHNOTICEFONT", {
 
 		VGATEXT = ScrW()/(ScrW()/50)
 
-		if (ScrW()/ScrW()) > 1.4 then 
+		if (ScrW()/ScrH()) > 1.4 and ScrH() != 720 then 
 			VGATEXT = 0
 		end
-
-		--print(VGATEXT)
 
 		if LocalPlayer():IsValid() then
 			function GAMEMODE:DrawDeathNotice() end
