@@ -51,9 +51,9 @@ surface.CreateFont("DEATHNOTICEFONT", {
 		for k,v in pairs(DEATHNOTICECLIENT.attacker) do
 			if CurTime() - 6 < k then i = i + 1
 				local triangle = {
-					{ x = ScrW()/1 + 120 - 15 - ScrW()/5 + VGA, y = ScrH()/100 + i*45 - 20 + Mouvement + 10},
-					{ x = ScrW()/1 + 120 + 15 - ScrW()/5 + VGA, y = ScrH()/100 + i*45 - 20 + Mouvement},
-					{ x = ScrW()/1 + 120 - 15 - ScrW()/5 + VGA, y = ScrH()/100 + i*45 - 20 + Mouvement - 10}
+					{ x = ScrW()/1 + 85 - 15 - ScrW()/5 + VGA, y = ScrH()/100 + i*45 - 20 + Mouvement + 10},
+					{ x = ScrW()/1 + 85 + 15 - ScrW()/5 + VGA, y = ScrH()/100 + i*45 - 20 + Mouvement},
+					{ x = ScrW()/1 + 85 - 15 - ScrW()/5 + VGA, y = ScrH()/100 + i*45 - 20 + Mouvement - 10}
 					}
 
 				if CurTime() - 6 < k then
