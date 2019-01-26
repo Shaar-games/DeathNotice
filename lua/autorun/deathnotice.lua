@@ -72,8 +72,6 @@ local function OnNPCdeath( ply , attacker )
 					end
 				elseif DEATHNOTICE.Attackers[k]:IsValid() then
 					CURRENTDEATH.attacker[k] = DEATHNOTICE.Attackers[k]:GetClass()
-				elseif DEATHNOTICE.Attackers[k].MetaName then
-					CURRENTDEATH.attacker[k] = CURRENTDEATH.attacker[k].MetaName
 				else
 					CURRENTDEATH.attacker[k] = "World"
 				end
@@ -150,8 +148,6 @@ local function Ondeath( ply , attacker , dmg )
 					end
 				elseif DEATHNOTICE.Attackers[k]:IsValid() then
 					CURRENTDEATH.attacker[k] = DEATHNOTICE.Attackers[k]:GetClass()
-				elseif DEATHNOTICE.Attackers[k].MetaName then
-					CURRENTDEATH.attacker[k] = CURRENTDEATH.attacker[k].MetaName
 				else
 					CURRENTDEATH.attacker[k] = "World"
 				end
