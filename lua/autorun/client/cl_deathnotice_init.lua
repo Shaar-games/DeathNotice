@@ -41,7 +41,9 @@ surface.CreateFont("DEATHNOTICEFONT", {
 			end
 		end
 
-		if OldCount < i and OldCount != 0 then  Mouvement = Mouvement - (OldCount - i)*45 end
+		if OldCount and i then 
+			if OldCount < i and OldCount != 0 then  Mouvement = Mouvement - (OldCount - i)*45 end
+		end
 		i = 0
 
 		if Mouvement != 0 then
